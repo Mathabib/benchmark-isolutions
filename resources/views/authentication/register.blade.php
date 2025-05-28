@@ -62,24 +62,25 @@
         </div>
         <div class="card-body register-card-body">
           <p class="register-box-msg">Register a new membership</p>
-          <form action="../index3.html" method="post">
+          <form method="POST" action="{{ route('register') }}">
+            @csrf
             <div class="input-group mb-1">
               <div class="form-floating">
-                <input id="registerFullName" type="text" class="form-control" placeholder="" />
+                <input id="registerFullName" name="name" type="text" class="form-control" placeholder="" />
                 <label for="registerFullName">Full Name</label>
               </div>
               <div class="input-group-text"><span class="bi bi-person"></span></div>
             </div>
             <div class="input-group mb-1">
               <div class="form-floating">
-                <input id="registerEmail" type="email" class="form-control" placeholder="" />
+                <input id="registerEmail" name="email" type="email" class="form-control" placeholder="" />
                 <label for="registerEmail">Email</label>
               </div>
               <div class="input-group-text"><span class="bi bi-envelope"></span></div>
             </div>
             <div class="input-group mb-1">
               <div class="form-floating">
-                <input id="registerPassword" type="password" class="form-control" placeholder="" />
+                <input id="registerPassword" name="password" type="password" class="form-control" placeholder="" />
                 <label for="registerPassword">Password</label>
               </div>
               <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
@@ -104,15 +105,7 @@
             </div>
             <!--end::Row-->
           </form>
-          <div class="social-auth-links text-center mb-3 d-grid gap-2">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-primary">
-              <i class="bi bi-facebook me-2"></i> Sign in using Facebook
-            </a>
-            <a href="#" class="btn btn-danger">
-              <i class="bi bi-google me-2"></i> Sign in using Google+
-            </a>
-          </div>
+          
           <!-- /.social-auth-links -->
           <p class="mb-0">
             <a href="login.html" class="link-primary text-center"> I already have a membership </a>
