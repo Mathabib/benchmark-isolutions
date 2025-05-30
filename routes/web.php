@@ -37,6 +37,13 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
 Route::post('/tasks/update-status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
+Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+
+// web.php
+Route::post('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+
+Route::middleware('auth')->post('/tasks/{task}/comments', [CommentController::class, 'store']);
+
 
 
 

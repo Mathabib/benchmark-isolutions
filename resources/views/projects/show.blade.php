@@ -8,16 +8,15 @@
     background-color: #f4f7fa;
     color: #333;
   }
-.kanban-board {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: row;
-  overflow-x: auto;
-  padding: 20px;
-  box-sizing: border-box;
-  gap: 20px;
-}
 
+  .kanban-board {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 20px;
+    gap: 20px;
+  }
 
   .kanban-column {
     background-color: #ffffff;
@@ -27,136 +26,180 @@
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
   }
 
-  .kanban-column:hover {
-    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-  }
-
-  .kanban-column h2 {
-    text-align: center;
-    margin-bottom: 15px;
+  .column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-weight: 700;
-    font-size: 1.5rem;
-    color: #2d3748;
-    border-bottom: 2px solid #e2e8f0;
+    font-size: 1.1rem;
     padding-bottom: 8px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    color: #2d3748;
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .status-badge.todo {
+    background-color: #a0aec0;
+  }
+
+  .status-badge.inprogress {
+    background-color: #3182ce;
+  }
+
+  .status-badge.done {
+    background-color: #38a169;
   }
 
   .kanban-card {
     background-color: #ffffff;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
     cursor: grab;
     user-select: none;
     font-size: 1rem;
     font-weight: 600;
-    color: #2d3748;
-    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+
+  .kanban-card-icons {
+    display: flex;
+    gap: 6px;
+    opacity: 0.6;
+  }
+
+  .kanban-card-icons i {
+    font-size: 1rem;
+  }
+
   .kanban-card:hover {
-    background-color: #edf2f7;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    background-color: #f1f5f9;
   }
+
   .kanban-card.dragging {
     opacity: 0.5;
-    box-shadow: 0 0 0 2px #4caf50 inset;
     background-color: #d1fae5;
+    box-shadow: 0 0 0 2px #4caf50 inset;
   }
 
-  .add-task-btn {
-    background-color: #38a169;
-    color: white;
-    padding: 12px 0;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    box-shadow: 0 5px 10px rgba(56,161,105,0.4);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    margin-top: auto;
-  }
-  .add-task-btn:hover {
-    background-color: #2f855a;
-    box-shadow: 0 8px 16px rgba(47,133,90,0.6);
-  }
-  .add-task-btn:active {
-    background-color: #276749;
-    box-shadow: none;
-    transform: translateY(1px);
-  }
-
-  /* Form input */
   .add-task-form {
     display: flex;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     gap: 8px;
   }
+
   .add-task-input {
     flex-grow: 1;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 8px;
     border: 1.5px solid #cbd5e0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #2d3748;
-    transition: border-color 0.25s ease;
+    font-size: 0.95rem;
   }
+
   .add-task-input:focus {
     outline: none;
     border-color: #38a169;
     background-color: #f0fff4;
   }
+
   .btn-submit, .btn-cancel {
     background-color: #38a169;
     border: none;
     color: white;
-    font-weight: 700;
-    padding: 10px 14px;
+    font-weight: 600;
+    padding: 8px 12px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 0.85rem;
   }
+
   .btn-submit:hover {
     background-color: #2f855a;
   }
+
   .btn-cancel {
     background-color: #e53e3e;
   }
+
   .btn-cancel:hover {
     background-color: #9b2c2c;
   }
+
+  .add-task-btn {
+    background: none;
+    border: none;
+    color: #4a5568;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
+    margin-top: 8px;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .add-task-btn:hover {
+    text-decoration: underline;
+    color: #2d3748;
+  }
 </style>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="kanban-board">
-  @foreach (['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Done'] as $status => $title)
+  @foreach (['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Complete'] as $status => $title)
     <div class="kanban-column" id="{{ $status }}">
-      <h2>{{ $title }}</h2>
-      @foreach ($tasks->where('status', $status) as $task)
-        <div class="kanban-card" draggable="true" data-id="{{ $task->id }}">
-          {{ $task->nama_task }}
-        </div>
-      @endforeach
+      <h2 class="column-header">
+        <span>{{ $title }}</span>
+        <span class="status-badge {{ $status }}">
+          {{ $tasks->where('status', $status)->count() }}
+        </span>
+      </h2>
 
-      <!-- Tempat form input muncul -->
+@foreach ($tasks->where('status', $status) as $task)
+  <div class="kanban-card" draggable="true" data-id="{{ $task->id }}" onclick="goToTaskDetail({{ $task->id }})">
+    <span>{{ $task->nama_task }}</span>
+    <span class="kanban-card-icons">
+    </span>
+  </div>
+@endforeach
+
+
+
       <div class="add-task-form-container"></div>
 
-      <!-- Tombol Add Task tetap di bawah -->
       <button class="add-task-btn" onclick="showAddTaskForm('{{ $status }}')">+ Add Task</button>
     </div>
   @endforeach
 </div>
+
 @endsection
 
 @push('js')
+<script>
+  function goToTaskDetail(taskId) {
+    window.location.href = '/tasks/' + taskId;
+  }
+</script>
+
+
 <script>
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   let draggingCard = null;
@@ -173,34 +216,73 @@
     });
   }
 
+ 
+  function updateTaskCounts() {
+    document.querySelectorAll('.kanban-column').forEach(column => {
+      const count = column.querySelectorAll('.kanban-card').length;
+      const badge = column.querySelector('.status-badge');
+      if (badge) {
+        badge.textContent = count;
+      }
+    });
+  }
+
+
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.kanban-card:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child }
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element || null;
+  }
+
+
   document.querySelectorAll('.kanban-card').forEach(card => attachDragEvents(card));
 
   document.querySelectorAll('.kanban-column').forEach(column => {
-    column.addEventListener('dragover', e => e.preventDefault());
+    column.addEventListener('dragover', e => {
+      e.preventDefault();
+
+      const dragging = draggingCard;
+      if (!dragging) return;
+
+      const afterElement = getDragAfterElement(column, e.clientY);
+
+      if (afterElement == null) {
+        column.insertBefore(dragging, column.querySelector('.add-task-form-container'));
+      } else {
+        column.insertBefore(dragging, afterElement);
+      }
+    });
 
     column.addEventListener('drop', function () {
       if (draggingCard) {
-    
-        column.insertBefore(draggingCard, column.querySelector('.add-task-btn'));
         const taskId = draggingCard.getAttribute('data-id');
         const newStatus = column.id;
 
-        if (taskId) {
-          fetch('/tasks/update-status', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-              task_id: taskId,
-              status: newStatus
-            })
+        fetch('/tasks/update-status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+          },
+          body: JSON.stringify({
+            task_id: taskId,
+            status: newStatus
           })
-          .then(res => res.json())
-          .then(data => console.log('Status updated', data))
-          .catch(err => console.error('Status update error', err));
-        }
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log('Status updated', data);
+          updateTaskCounts();
+        })
+        .catch(err => console.error('Status update error', err));
       }
     });
   });
@@ -209,10 +291,8 @@
     const column = document.getElementById(columnId);
     const formContainer = column.querySelector('.add-task-form-container');
 
-    // Jika form sudah ada, jangan buat lagi
     if (formContainer.innerHTML.trim() !== '') return;
 
-    // Buat elemen form
     formContainer.innerHTML = `
       <div class="add-task-form">
         <input type="text" class="add-task-input" placeholder="Enter new task..." />
@@ -225,7 +305,6 @@
     const submitBtn = formContainer.querySelector('.btn-submit');
     const cancelBtn = formContainer.querySelector('.btn-cancel');
 
-    // Fokus input
     input.focus();
 
     submitBtn.addEventListener('click', () => {
@@ -239,7 +318,7 @@
           'X-CSRF-TOKEN': csrfToken
         },
         body: JSON.stringify({
-          project_id: 1, 
+          project_id: 1,
           nama_task: taskText,
           status: columnId
         })
@@ -251,15 +330,15 @@
           newCard.className = 'kanban-card';
           newCard.setAttribute('draggable', 'true');
           newCard.setAttribute('data-id', data.task.id);
-          newCard.textContent = data.task.nama_task;
-
-          // Masukkan sebelum formContainer (biar di bawah task terakhir)
+          newCard.innerHTML = `
+            <span>${data.task.nama_task}</span>
+            <span class="kanban-card-icons">
+            </span>
+          `;
           column.insertBefore(newCard, formContainer);
-
           attachDragEvents(newCard);
-
-          // Hapus form setelah submit
           formContainer.innerHTML = '';
+          updateTaskCounts();
         } else {
           alert('Failed to add task');
         }
@@ -282,5 +361,9 @@
       }
     });
   }
+
+
+  updateTaskCounts();
 </script>
+
 @endpush
