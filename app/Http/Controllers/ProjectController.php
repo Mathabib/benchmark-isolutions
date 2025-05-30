@@ -13,11 +13,16 @@ class ProjectController extends Controller
         return view('dashboard', compact('projects'));
     }
 
-  public function show(Project $project)
+
+
+
+public function show(Project $project)
 {
-    $projects = Project::all(); // <-- Tambahkan ini
-    $project->load('tasks.assignToUser', 'tasks.comments.user');
-    return view('projects.show', compact('project', 'projects'));
+    // Ambil semua task project
+    $tasks = $project->tasks()->get();
+
+    return view('projects.show', compact('project', 'tasks'));
 }
+
 
 }
