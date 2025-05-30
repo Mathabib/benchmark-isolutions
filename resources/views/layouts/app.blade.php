@@ -73,6 +73,8 @@
         <section>
           <div>
             @yield('content')
+
+              @stack('js')
           </div>
         </section>
 
