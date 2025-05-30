@@ -32,10 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
  Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
-    Route::resource('projects', ProjectController::class);
-    Route::resource('projects.tasks', TaskController::class);
+   Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
-    Route::post('tasks/{task}/comments', [CommentController::class, 'store'])->name('tasks.comments.store');
+
+Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+Route::post('/tasks/update-status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
+
+
+
 });
 
 require __DIR__.'/auth.php';
