@@ -47,7 +47,6 @@ Route::middleware('auth')->post('/tasks/{task}/comments', [CommentController::cl
 
 
 
-
 });
 
 require __DIR__.'/auth.php';

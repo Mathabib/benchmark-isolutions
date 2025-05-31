@@ -84,48 +84,6 @@
         <textarea class="form-control" id="description" rows="10"></textarea>
       </div>
 
-      {{-- <div>
-        <label>Task Name</label><br>
-        <input type="text" name="nama_task" value="{{ old('nama_task', $task->nama_task) }}" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-      <div>
-        <label>Status</label><br>
-        <select name="status" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-          @foreach(['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Complete'] as $key => $label)
-            <option value="{{ $key }}" @if(old('status', $task->status) == $key) selected @endif>{{ $label }}</option>
-          @endforeach
-        </select>
-      </div>
-      <div>
-        <label>Start Date</label><br>
-        <input type="date" name="start_date" value="{{ old('start_date', optional($task->start_date)->format('Y-m-d')) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-      <div>
-        <label>End Date</label><br>
-        <input type="date" name="end_date" value="{{ old('end_date', optional($task->end_date)->format('Y-m-d')) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-      <div>
-        <label>Estimate (hours)</label><br>
-        <input type="time" name="estimate" value="{{ old('estimate', $task->estimate) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-      <div>
-        <label>Assign To</label><br>
-        <select name="assign_to" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-          <option value="">-- None --</option>
-          @foreach(App\Models\User::all() as $user)
-            <option value="{{ $user->id }}" @if(old('assign_to', $task->assign_to) == $user->id) selected @endif>{{ $user->name }}</option>
-          @endforeach
-        </select>
-      </div>
-      <div>
-        <label>Priority</label><br>
-        <select name="priority" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-          @foreach(['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'] as $key => $label)
-            <option value="{{ $key }}" @if(old('priority', $task->priority) == $key) selected @endif>{{ $label }}</option>
-          @endforeach
-        </select>
-      </div> --}}
-
 
       <br>
       <button type="submit" style="background:#38a169; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">Save</button>
@@ -135,14 +93,14 @@
   <!-- Comments Section -->
   <div class="border border-white" style="flex:1; padding:20px; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.05); max-height: 600px; overflow-y: auto;">
     <h3>Comments</h3>
-    <div id="comments-container" style="display:flex; flex-direction: column-reverse; gap: 12px;">
-      @foreach($task->comments->sortByDesc('created_at') as $comment)
+    <div id="comments-container" data-url="{{ route('get.comments', ['task' => $task->id]) }}" style="display:flex; flex-direction: column-reverse; gap: 12px;">
+      {{-- @foreach($task->comments->sortByDesc('created_at') as $comment)
         <div style="background:#fff; padding:10px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
           <strong>{{ $comment->user->name }}</strong> 
           <small style="color:#555;">{{ $comment->created_at->format('d M Y, H:i') }}</small>
           <p>{{ $comment->content }}</p>
         </div>
-      @endforeach
+      @endforeach --}}
     </div>
 
     <form id="comment-form" style="margin-top: 20px;">
@@ -154,7 +112,35 @@
 
 </div>
 
+<script src="{{ asset('js/jquery.js') }}"></script>
 <script>
+  const url = document.getElementById('comments-container').dataset.url;
+  function loadComments() {
+    $.get(`${url}`, function(response) {
+      const container = $('#comments-container');
+      container.empty(); // kosongkan dulu
+      console.log(response);
+      response.forEach(comment => {
+        const html = `
+          <div style="padding:10px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+            <small>${new Date(comment.created_at).toLocaleString()}</small>
+            <p>${comment.content}</p>
+          </div>
+        `;
+        container.append(html);
+      });
+    });
+  }
+
+  // Contoh: Panggil saat halaman load (misal task ID = 1)
+  $(document).ready(function() {
+    loadComments();
+  });
+
+</script>
+
+
+{{-- <script>
   const taskId = {{ $task->id }};
   const commentsContainer = document.getElementById('comments-container');
   const commentForm = document.getElementById('comment-form');
@@ -238,5 +224,5 @@
     })
     .catch(() => alert('Failed to send comment'));
   });
-</script>
+</script> --}}
 @endsection

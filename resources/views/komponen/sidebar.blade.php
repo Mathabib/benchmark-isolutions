@@ -25,7 +25,7 @@
                 <!--begin::Sidebar Menu-->
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active">
+                        <a href="{{ route('dashboard') }}" class="nav-link active">
                             <i class="nav-icon bi bi-speedometer"></i>
                             <p>Dashboard</p>
                         </a>
@@ -57,3 +57,7 @@
             <!--end::Sidebar Wrapper-->
       </aside>
       <!--end::Sidebar-->
+
+      <script>
+        console.log('hallo dari asside menu kebaca gak ya')
+      </script>

@@ -10,8 +10,12 @@ class CommentController extends Controller
 
       public function index(Task $task)
     {
-        $comments = $task->comments()->with('user')->latest()->get();
-        return response()->json($comments);
+        // $task = Task::find($id);
+        // $comments =  $task->comments()->get();
+        // $comments = $task->comments()->with('user')->latest()->get();
+        $comments = $task->comments()->get();
+        // return response()->json($comments);
+        return $comments;
     }
 
 

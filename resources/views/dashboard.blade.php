@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'dasboard')
+@section('title', 'dashboard')
 @section('content')
-    
-    <!--begin::App Main-->
+    <h1>Dashboard not Ready under development</h1>
+    {{-- <!--begin::App Main-->
         <main class="app-main">
             <!--begin::App Content Header-->
             <div class="app-content-header">
@@ -444,6 +444,6 @@
             </div>
             <!--end::App Content-->
         </main>
-    <!--end::App Main-->
+    <!--end::App Main--> --}}
 
 @endsection
