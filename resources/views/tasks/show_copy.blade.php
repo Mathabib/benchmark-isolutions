@@ -1,90 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-  .cell-label{
-    width: 150px;
-    font-weight: bold;
-  }
-  .cell-konten{
-    width: 200px;
-  }
-</style>
 <div style="display:flex; gap:20px;">
 
   <!-- Form Edit Task -->
-  <div style="flex:2;  padding:20px; border-radius:12px;">
+  <div style="flex:2; background:#fff; padding:20px; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.05);">
     <h2>Edit Task</h2>
     <div id="success-message" style="color:green; margin-bottom: 15px; display:none;"></div>
 
     <form id="task-form">
       @csrf
       @method('PUT')
-
-      <div class="d-flex p-5 justify-content-between">
-        <div role="table">
-          <div role="row" class="d-flex mb-3">
-            <div role="cell" class="me-3 cell-label" >Status</div> 
-            <div role="cell" class=" cell-konten">
-              <select class="form-control form-control-sm" name="status" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-                @foreach(['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Complete'] as $key => $label)
-                  <option value="{{ $key }}" @if(old('status', $task->status) == $key) selected @endif>{{ $label }}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-          <div role="row" class="d-flex mb-3">
-            <div role="cell" class="me-3 cell-label" >Priority</div> 
-            <div role="cell" class=" cell-konten">
-              <select class="form-control form-control-sm" name="priority" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-                @foreach(['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'] as $key => $label)
-                  <option value="{{ $key }}" @if(old('priority', $task->priority) == $key) selected @endif>{{ $label }}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>          
-          <div role="row" class="d-flex mb-3">
-            <div role="cell" class="me-3 cell-label" >Assign To</div> 
-            <div role="cell" class=" cell-konten">
-              <select class="form-control form-control-sm" name="assign_to" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-                <option value="">-- None --</option>
-                @foreach(App\Models\User::all() as $user)
-                  <option value="{{ $user->id }}" @if(old('assign_to', $task->assign_to) == $user->id) selected @endif>{{ $user->name }}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>          
-        </div>
-
-        <div role="table">
-          <div role="row" class="d-flex mb-3">
-            <div role="cell" class="me-3 cell-label" >Date Start</div> 
-            <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="date" name="start_date" value="{{ old('start_date', optional($task->start_date)->format('Y-m-d')) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-          </div>
-          <div role="row" class="d-flex mb-3">
-            <div role="cell" class="me-3 cell-label" >Deadline</div> 
-            <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="date" name="end_date" value="{{ old('end_date', optional($task->end_date)->format('Y-m-d')) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-          </div>
-          <div role="row" class="d-flex mb-3">
-            <div role="cell" class="me-3 cell-label" >Time Estimate</div> 
-            <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="time" name="estimate" value="{{ old('estimate', $task->estimate) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label for="description" name="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" rows="10"></textarea>
-      </div>
-
-      {{-- <div>
+      <div>
         <label>Task Name</label><br>
         <input type="text" name="nama_task" value="{{ old('nama_task', $task->nama_task) }}" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
       </div>
@@ -124,16 +51,14 @@
             <option value="{{ $key }}" @if(old('priority', $task->priority) == $key) selected @endif>{{ $label }}</option>
           @endforeach
         </select>
-      </div> --}}
-
-
+      </div>
       <br>
       <button type="submit" style="background:#38a169; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">Save</button>
     </form>
   </div>
 
   <!-- Comments Section -->
-  <div class="border border-white" style="flex:1; padding:20px; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.05); max-height: 600px; overflow-y: auto;">
+  <div style="flex:1; background:#f9fafb; padding:20px; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.05); max-height: 600px; overflow-y: auto;">
     <h3>Comments</h3>
     <div id="comments-container" style="display:flex; flex-direction: column-reverse; gap: 12px;">
       @foreach($task->comments->sortByDesc('created_at') as $comment)
@@ -147,7 +72,7 @@
 
     <form id="comment-form" style="margin-top: 20px;">
       @csrf
-      <textarea class="form-control" id="comment-input" rows="3" placeholder="Add a comment..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;"></textarea>
+      <textarea id="comment-input" rows="3" placeholder="Add a comment..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;"></textarea>
       <button type="submit" style="margin-top: 10px; background:#3182ce; color:#fff; padding:10px 15px; border:none; border-radius:8px; cursor:pointer;">Send</button>
     </form>
   </div>
