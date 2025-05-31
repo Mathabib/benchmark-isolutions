@@ -24,5 +24,11 @@ public function show(Project $project)
     return view('projects.show', compact('project', 'tasks'));
 }
 
+public function list(Project $project)
+{
+    $tasks = $project->tasks()->get();
+    return view('projects.list', compact('project', 'tasks'));
+}
+
 
 }

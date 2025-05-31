@@ -162,7 +162,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
+<div>
+  @include('komponen.navbar_mode')
+</div>
 <div class="kanban-board">
   @foreach (['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Complete'] as $status => $title)
     <div class="kanban-column" id="{{ $status }}">
