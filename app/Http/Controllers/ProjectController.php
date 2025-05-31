@@ -20,7 +20,7 @@ public function show(Project $project)
 {
     // Ambil semua task project
     $tasks = $project->tasks()->get();
-
+    
     return view('projects.show', compact('project', 'tasks'));
 }
 
