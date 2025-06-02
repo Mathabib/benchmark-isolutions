@@ -9,16 +9,17 @@ class TaskController extends Controller
 {
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'nama_task' => 'required|string|max:255',
-            'status' => 'required|in:todo,inprogress,done',
-        ]);
+        // $validated = $request->validate([
+        //     'project_id' => 'required|exists:projects,id',
+        //     'nama_task' => 'required|string|max:255',
+        //     'status' => 'required|in:todo,inprogress,done',
+        // ]);
 
         $task = Task::create([
-            'project_id' => $validated['project_id'],
-            'nama_task' => $validated['nama_task'],
-            'status' => $validated['status'],
+            'project_id' => $request->project_id,
+            'nama_task' => $request->nama_task,
+            'status' => $request->status,
+            'description' => $request->description
         ]);
 
         return response()->json(['task' => $task], 201);
@@ -47,25 +48,71 @@ public function show(Task $task)
 
 public function update(Request $request, Task $task)
 {
+    // return $request;
+
     $request->validate([
-        'nama_task' => 'required|string|max:255',
-        'status' => 'required|in:todo,inprogress,done',
+        'nama_task' => 'nullable|string|max:255',
+        'status' => 'nullable|in:todo,inprogress,done',
         'start_date' => 'nullable|date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
         'estimate' => 'nullable',
         'assign_to' => 'nullable|exists:users,id',
-        'priority' => 'required|in:low,medium,high',
+        'priority' => 'nullable|in:low,medium,high',
+        'description' => 'nullable'
     ]);
 
-    $task->update([
-        'nama_task' => $request->nama_task,
-        'status' => $request->status,
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-        'estimate' => $request->estimate,
-        'assign_to' => $request->assign_to,
-        'priority' => $request->priority,
-    ]);
+     $data = [];
+
+    if ($request->filled('nama_task')) {
+        $data['nama_task'] = $request->nama_task;
+    }
+
+    if ($request->filled('status')) {
+        $data['status'] = $request->status;
+    }
+
+    if ($request->filled('start_date')) {
+        $data['start_date'] = $request->start_date;
+    }
+
+    if ($request->filled('end_date')) {
+        $data['end_date'] = $request->end_date;
+    }
+
+    if ($request->filled('estimate')) {
+        $data['estimate'] = $request->estimate;
+    }
+
+    if ($request->filled('assign_to')) {
+        $data['assign_to'] = $request->assign_to;
+    }
+
+    if ($request->filled('priority')) {
+        $data['priority'] = $request->priority;
+    }
+
+    if ($request->filled('description')) {
+        $data['description'] = $request->description;
+    }
+
+    if (!empty($data)) {
+    $task->update($data);
+    }
+
+    // $task->update([
+    //     'nama_task' => $request->nama_task,
+    //     'status' => $request->status,
+    //     'start_date' => $request->start_date,
+    //     'end_date' => $request->end_date,
+    //     'estimate' => $request->estimate,
+    //     'assign_to' => $request->assign_to,
+    //     'priority' => $request->priority,
+    //     'description' => $request->description
+    // ]);
+
+    // return 'berhasil terubah';
+
+    // return redirect()->back();
 
     return response()->json($task); // balikin data terbaru dalam json
 }

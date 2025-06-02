@@ -45,6 +45,20 @@
     {{-- <link rel="stylesheet" href="../../../dist/css/adminlte.css" /> --}}
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
+    <style>
+      .footer-copyright {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 0.75rem 0;
+      background-color: rgba(26, 26, 26, 0.1);
+      color: #facc15;
+      font-size: 0.9rem;
+      z-index: 10;
+      user-select: none;
+    }
+    </style>
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -100,6 +114,10 @@
         </div>
         <!-- /.login-card-body -->
       </div>
+    </div>
+
+    <div class="footer-copyright">
+      &copy; {{ date('Y') }} Isolutions Indonesia. All rights reserved.
     </div>
     <!-- /.login-box -->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
