@@ -341,6 +341,7 @@
           newCard.className = 'kanban-card';
           newCard.setAttribute('draggable', 'true');
           newCard.setAttribute('data-id', data.task.id);
+          newCard.setAttribute('onclick', `goToTaskDetail(${data.task.id})`);
           newCard.innerHTML = `
             <span>${data.task.nama_task}</span>
             <span class="kanban-card-icons">
