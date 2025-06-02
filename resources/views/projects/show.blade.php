@@ -5,8 +5,8 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fa;
-    color: #333;
+    /* background-color: #f4f7fa; */
+    /* color: #333; */
   }
 
   .kanban-board {
@@ -19,7 +19,7 @@
   }
 
   .kanban-column {
-    background-color: #ffffff;
+    background-color: #343a40;
     border-radius: 12px;
     padding: 20px;
     width: 420px;
@@ -38,7 +38,7 @@
     padding-bottom: 8px;
     margin-bottom: 15px;
     border-bottom: 2px solid #e2e8f0;
-    color: #2d3748;
+    /* color: #2d3748; */
   }
 
   .status-badge {
@@ -63,7 +63,7 @@
   }
 
   .kanban-card {
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     border-radius: 8px;
     padding: 12px 14px;
     margin-bottom: 12px;
@@ -89,6 +89,7 @@
 
   .kanban-card:hover {
     background-color: #f1f5f9;
+    color: black;
   }
 
   .kanban-card.dragging {
@@ -113,8 +114,8 @@
 
   .add-task-input:focus {
     outline: none;
-    border-color: #38a169;
-    background-color: #f0fff4;
+    /* border-color: #38a169; */
+    /* background-color: #f0fff4; */
   }
 
   .btn-submit, .btn-cancel {
@@ -154,7 +155,7 @@
 
   .add-task-btn:hover {
     text-decoration: underline;
-    color: #2d3748;
+    color: #dee2e6;
   }
 </style>
 
@@ -165,6 +166,12 @@
 <div>
   @include('komponen.navbar_mode')
 </div>
+<div style="padding: 20px 20px 0 20px;" id="project-title" data-projectid="{{ $project->id }}">
+  <h1 style="font-size: 1.75rem; font-weight: 700; color:rgb(255, 255, 255);">
+    {{ $project->nama ?? 'Unnamed Project' }}
+  </h1>
+</div>
+
 <div class="kanban-board">
   @foreach (['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Complete'] as $status => $title)
     <div class="kanban-column" id="{{ $status }}">
@@ -310,17 +317,19 @@
     input.focus();
 
     submitBtn.addEventListener('click', () => {
+      let elemen = document.getElementById('project-title')
+      let project_id = elemen.dataset.projectid
       const taskText = input.value.trim();
       if (!taskText) return alert('Please enter task description');
 
-      fetch('/tasks', {
+      fetch('/api/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken
         },
         body: JSON.stringify({
-          project_id: 1,
+          project_id: project_id,
           nama_task: taskText,
           status: columnId
         })

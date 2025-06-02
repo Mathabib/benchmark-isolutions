@@ -13,27 +13,28 @@ class CommentController extends Controller
         // $task = Task::find($id);
         // $comments =  $task->comments()->get();
         // $comments = $task->comments()->with('user')->latest()->get();
-        $comments = $task->comments()->get();
+        $comments = $task->comments()->with('user')->get();
         // return response()->json($comments);
         return $comments;
     }
 
 
- public function store(Request $request, Task $task)
-{
-    $request->validate([
-        'comment' => 'required|string|max:1000',
-    ]);
+    public function store(Request $request, Task $task)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:1000',
+        ]);
 
-    $comment = $task->comments()->create([
-        'user_id' => auth()->id(),
-        'content' => $request->comment,
-    ]);
+        $comment = $task->comments()->create([
+            // 'user_id' => auth()->id(),
+            'user_id' => $request->user_id,
+            'content' => $request->comment,
+        ]);
 
-    $comment->load('user');
+        $comment->load('user');
 
-    return response()->json($comment);
-}
+        return response()->json($comment);
+    }
 
 
 }
