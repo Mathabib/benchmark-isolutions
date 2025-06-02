@@ -9,12 +9,34 @@
   .cell-konten{
     width: 200px;
   }
+  [contenteditable="true"] {
+  border: none;
+  outline: none;
+  }
 </style>
 <div style="display:flex; gap:20px;">
 
   <!-- Form Edit Task -->
   <div style="flex:2;  padding:20px; border-radius:12px;">
-    <h2>Edit Task</h2>
+    <div class="d-flex justify-content-between">
+      <div class="">
+        <a href="{{ url()->previous() }}" style="text-decoration: none;color: white"><h2><<</h2></a>
+      </div>
+      <div class="dropdown">        
+        <span class="float-end fs-5 fw-bold" style="cursor: pointer"  data-bs-toggle="dropdown" aria-expanded="false"><h1>...</h1></span>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{{ route('task.delete', ['project' => $task->project->id, 'task' => $task->id]) }}">Delete Task</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      
+      <div class="col-10">
+        <h3 contenteditable="true" id="nama_task_editable">{{ $task->nama_task }}</h3>
+        <input type="hidden" name="nama_task" id="nama_task_input">
+      </div>      
+    </div>
+    
     <div id="success-message" style="color:green; margin-bottom: 15px; display:none;"></div>
 
     <form id="task-form" data-url="{{ route('tasks.update.api', ['task' => $task->id]) }}">
@@ -61,13 +83,13 @@
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Date Start</div> 
             <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="date" name="start_date" id="start_date_input" value="{{ old('start_date', optional($task->start_date)->format('Y-m-d')) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <input class="form-control form-control-sm" type="date" name="start_date" id="start_date_input"  value="{{ old('start_date', $task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') : '') }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
             </div>
           </div>
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Deadline</div> 
             <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="date" name="end_date" id="end_date_input" value="{{ old('end_date', optional($task->end_date)->format('Y-m-d')) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <input class="form-control form-control-sm" type="date" name="end_date" id="end_date_input" value="{{ old('end_date', $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('Y-m-d') : '' ) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
             </div>
           </div>
           <div role="row" class="d-flex mb-3">
@@ -82,12 +104,9 @@
 
       <div class="mb-3">
         <label for="description" name="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" rows="10"></textarea>
+        <textarea class="form-control" id="description" rows="10">{{ old('description', $task->description) }}</textarea>
       </div>
 
-
-      <br>
-      <button type="submit" style="background:#38a169; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">Save</button>
     </form>
   </div>
 
@@ -178,7 +197,8 @@
     })
 
 //BAGIAN UNTUK FORM 
-
+    nama_task_editable = $('#nama_task_editable');
+    nama_task_input = $('#nama_task_input');
     status_input = $('#status_input');
     priority_input = $('#priority_input');
     assign_to_input = $('#assign_to_input');
@@ -206,6 +226,10 @@
       })
     }
 
+    nama_task_editable.on('blur', function(){
+      console.log($(this).text());
+      update($(this).text(), 'nama_task');
+    })
     status_input.on('change', function() {
       update(status_input.val(), 'status')
     })

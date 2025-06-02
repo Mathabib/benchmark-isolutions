@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+Route::get('/task/delete/{project}/{task}', [TaskController::class, 'delete'])->name('task.delete');
 Route::post('/tasks/update-status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 // web.php

@@ -1,8 +1,8 @@
 <!--begin::Header-->
-<nav class="app-header navbar navbar-expand bg-body mt-5">
+<nav class="app-header navbar navbar-expand bg-body mt-5" style="z-index: -1">
     <!--begin::Container-->
     <div class="container-fluid">
-        <ul class="navbar-nav">            
+        <ul class="navbar-nav">
         <li class="nav-item d-none d-md-block"><a href="{{ route('projects.show', $project->id) }}" class="nav-link">KANBAN</a></li>
         <li class="nav-item d-none d-md-block"><a href="{{ route('projects.list', $project->id) }}" class="nav-link">LIST</a></li>
         </ul>
