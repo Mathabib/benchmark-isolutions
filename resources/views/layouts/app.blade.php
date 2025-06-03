@@ -3,6 +3,8 @@
 <html lang="en" data-bs-theme="dark">
   <!--begin::Head-->
   <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>
       @yield('title', 'ini default')
@@ -83,6 +85,7 @@
     <!--end::App Wrapper-->
     <!--begin::Script-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    
     <script
       src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
       integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
