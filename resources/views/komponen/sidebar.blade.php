@@ -42,6 +42,7 @@
                                 <i class="nav-arrow bi bi-chevron-right"></i>
                             </p>
                         </a>
+                        @if(isset($project))
                         <ul class="nav nav-treeview">
                             @foreach($projects as $project)
                                 <li class="nav-item">
@@ -79,6 +80,7 @@
                                 </li>
                            
                         </ul>
+                        @endif
                     </li>
                 </ul>
                 <!--end::Sidebar Menu-->
