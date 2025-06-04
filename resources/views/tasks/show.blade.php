@@ -20,7 +20,7 @@
   <div style="flex:2;  padding:20px; border-radius:12px;">
     <div class="d-flex justify-content-between">
       <div class="">
-        <a href="{{ url()->previous() }}" style="text-decoration: none;color: white"><h2><<</h2></a>
+        <a href="{{ url()->previous() }}" style="text-decoration: none;color: white"><h2><i class="fa-solid fa-arrow-left"></i></h2></a>
       </div>
       <div class="dropdown">        
         <span class="float-end fs-5 fw-bold" style="cursor: pointer"  data-bs-toggle="dropdown" aria-expanded="false"><h1>...</h1></span>
@@ -94,8 +94,8 @@
           </div>
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Time Estimate</div> 
-            <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="time" name="estimate" id="estimate_input" value="{{ old('estimate', $task->estimate) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+            <div role="cell" class=" cell-konten" id="taskid" data-taskid="{{ $task->id }}" data-estimateurl="{{ route('tasks.estimate.api', ['task' => $task->id]) }}">
+              <span id="estimate_content">{{ $estimate }} Days</span>
             </div>
           </div>
         </div>
@@ -226,6 +226,27 @@
       })
     }
 
+    function estimate(){
+      let taskid = $('#taskid').data('taskid');
+      let estimateurl = $('#taskid').data('estimateurl');
+      $.ajax({
+        url: estimateurl,
+        method: 'post',
+        dataType: 'json',
+        data: {
+          task: taskid
+        },
+        success: function(response) {
+          $('#estimate_content').html(`${response} Day`);
+          console.log(response);
+        },
+        error: function(xhr) {
+          console.error('GAGAL:', xhr.responseText);
+        }
+      })
+      
+    }
+
     nama_task_editable.on('blur', function(){
       console.log($(this).text());
       update($(this).text(), 'nama_task');
@@ -244,10 +265,12 @@
 
     start_date_input.on('change', function() {
       update(start_date_input.val(), 'start_date')
+      estimate();
     })
 
     end_date_input.on('change', function() {
       update(end_date_input.val(), 'end_date')
+      estimate();
     })
 
     estimate_input.on('change', function() {
@@ -261,6 +284,7 @@
 
     // Panggil saat halaman selesai dimuat
     loadComments();
+    
   });
 </script>
 

@@ -23,3 +23,4 @@ Route::get('/comments/{task}', [CommentController::class, 'index'])->name('get.c
 Route::post('/comments/{task}', [CommentController::class, 'store'])->name('store.comments');
 Route::post('/tasks', [TaskController::class, 'store'])->name('task.store');
 Route::post('/task/update/{task}', [TaskController::class, 'update'])->name('tasks.update.api');
+Route::post('/task/estimate/{task}', [TaskController::class, 'estimate'])->name('tasks.estimate.api');

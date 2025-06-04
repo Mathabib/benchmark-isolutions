@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TaskController extends Controller
 {
@@ -49,7 +50,18 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $task->load('assignToUser', 'comments.user', 'project');
-        return view('tasks.show', compact('task'));
+        $estimate = 0;
+        if($task->start_date != null && $task->end_date != null){
+            $estimate = Carbon::parse($task->end_date)->diffInDays(Carbon::parse($task->start_date)) + 1;
+            
+        }        
+        return view('tasks.show', compact('task', 'estimate'));
+    }
+
+    public function estimate(Task $task)
+    {
+         $estimate = Carbon::parse($task->end_date)->diffInDays(Carbon::parse($task->start_date)) + 1;
+        return $estimate;
     }
 
 
