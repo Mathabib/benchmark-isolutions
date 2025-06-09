@@ -18,7 +18,7 @@ return new class extends Migration
         $table->string('status')->default('todo'); // contoh: todo, inprogress, done
         $table->date('start_date')->nullable();
         $table->date('end_date')->nullable();
-        $table->time('estimate')->nullable();
+        $table->string('estimate')->nullable();
         $table->foreignId('assign_to')->nullable()->constrained('users')->onDelete('set null');
         $table->string('priority')->default('medium'); // contoh: low, medium, high
         $table->string('description')->nullable()->default('...'); // contoh: low, medium, high

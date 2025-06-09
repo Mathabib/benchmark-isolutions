@@ -53,6 +53,7 @@
                                 </li>
                             @endforeach
                         </ul>
+                        @endif
                     </li>
                 
                     <li class="nav-item">
@@ -66,21 +67,23 @@
                         <ul class="nav nav-treeview">
                           
                                 <li class="nav-item">
-                                    <a href="{{ route('projects.index2', $project->id) }}" class="nav-link">
+                                    {{-- <a href="{{ route('projects.index2', $project->id) }}" class="nav-link"> --}}
+                                    <a href="{{ route('projects.index2') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Projects</p>
                                     </a>
                                 </li>
 
                                  <li class="nav-item">
-                                    <a href="{{ route('users.index', $project->id) }}" class="nav-link">
+                                    {{-- <a href="{{ route('users.index', $project->id) }}" class="nav-link"> --}}
+                                    <a href="{{ route('users.index') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Users</p>
                                     </a>
                                 </li>
                            
                         </ul>
-                        @endif
+                        
                     </li>
                 </ul>
                 <!--end::Sidebar Menu-->

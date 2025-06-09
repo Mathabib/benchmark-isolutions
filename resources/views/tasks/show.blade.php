@@ -94,7 +94,7 @@
           </div>
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Time Estimate</div> 
-            <div role="cell" class=" cell-konten" id="taskid" data-taskid="{{ $task->id }}" data-estimateurl="{{ route('tasks.estimate.api', ['task' => $task->id]) }}">
+            <div role="cell" class=" cell-konten" id="taskid" data-taskid="{{ $task->id }}" data-estimateurl="{{ route('tasks.estimate.api', ['task' => $task->id]) }}" data-estimate_update_url="{{ route('tasks.update.api', ['task' => $task->id]) }}">
               <span id="estimate_content">{{ $estimate }} Days</span>
             </div>
           </div>
@@ -229,6 +229,9 @@
     function estimate(){
       let taskid = $('#taskid').data('taskid');
       let estimateurl = $('#taskid').data('estimateurl');
+      let estimate_update_url = $('#taskid').data('estimate_update_url');
+      
+      //RENDER TAMPILAN ESTIMATE
       $.ajax({
         url: estimateurl,
         method: 'post',
@@ -237,13 +240,31 @@
           task: taskid
         },
         success: function(response) {
-          $('#estimate_content').html(`${response} Day`);
-          console.log(response);
+          let estimate = response
+          //==UPDATE DATABASE
+          $.ajax({
+            url: estimate_update_url,
+            method: 'post',
+            dataType: 'json',
+            data: {
+              estimate: estimate
+            },
+            success: function(response) {    
+              console.log(response);                      
+            },
+            error: function(xhr) {
+              console.error('GAGAL di update database:', xhr.responseText);
+            }
+          })
+          //========
+          
+          $('#estimate_content').html(`${response} Day`);          
         },
         error: function(xhr) {
           console.error('GAGAL:', xhr.responseText);
         }
       })
+      
       
     }
 
