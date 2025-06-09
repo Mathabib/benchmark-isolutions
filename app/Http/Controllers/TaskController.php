@@ -52,8 +52,7 @@ class TaskController extends Controller
         $task->load('assignToUser', 'comments.user', 'project');
         $estimate = 0;
         if($task->start_date != null && $task->end_date != null){
-            $estimate = Carbon::parse($task->end_date)->diffInDays(Carbon::parse($task->start_date)) + 1;
-            
+            $estimate = Carbon::parse($task->end_date)->diffInDays(Carbon::parse($task->start_date)) + 1;            
         }        
         return view('tasks.show', compact('task', 'estimate'));
     }

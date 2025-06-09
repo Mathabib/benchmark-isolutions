@@ -27,6 +27,27 @@ Route::get('/dashboard', [ProjectController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+    Route::get('/gantt', function () {
+    $tasks = [
+        [
+            'id' => 'Task1',
+            'name' => 'Perencanaan',
+            'start' => '2025-06-01',
+            'end' => '2025-06-05',
+            'progress' => 20,
+        ],
+        [
+            'id' => 'Task2',
+            'name' => 'Pengembangan',
+            'start' => '2025-06-06',
+            'end' => '2025-06-15',
+            'progress' => 10,
+            'dependencies' => 'Task1'
+        ],
+    ];
+
+    return view('projects.gantt', compact('tasks'));
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index2'])->name('projects.index2');
