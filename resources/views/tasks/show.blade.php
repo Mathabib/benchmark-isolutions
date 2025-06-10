@@ -100,12 +100,45 @@
           </div>
         </div>
       </div>
+<div class="mb-4">
+  <label for="attachment" class="form-label fw-bold">Upload Attachment</label>
+  <input type="file" name="attachment[]" id="attachment" class="form-control" multiple>
+  <small class="form-text text-muted">You can select multiple files at once.</small>
+</div>
+
+<div id="attachment-section" class="mb-4 {{ $task->attachments && $task->attachments->count() > 0 ? '' : 'd-none' }}">
+  <label class="form-label fw-bold">Existing Attachments</label>
+  <ul class="list-group" id="attachment-list">
+    @if($task->attachments && $task->attachments->count() > 0)
+      @foreach($task->attachments as $file)
+        <li class="list-group-item d-flex justify-content-between align-items-center" id="attachment-item-{{ $file->id }}">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-paperclip me-2 text-primary"></i>
+            <a href="{{ asset('storage/attachments/' . $file->filename) }}" target="_blank" class="text-decoration-none fw-medium">
+              {{ $file->filename }}
+            </a>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-secondary">{{ strtoupper(pathinfo($file->filename, PATHINFO_EXTENSION)) }}</span>
+            <button type="button" class="btn btn-sm btn-outline-danger delete-attachment" data-id="{{ $file->id }}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </li>
+      @endforeach
+    @endif
+  </ul>
+</div>
+
+
 
 
       <div class="mb-3">
         <label for="description" name="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="10">{{ old('description', $task->description) }}</textarea>
       </div>
+
+
 
     </form>
   </div>
@@ -206,6 +239,7 @@
     end_date_input = $('#end_date_input');
     estimate_input = $('#estimate_input');
     description = $('#description');
+    attachment = $('#attachment');
     
 
     function update(value, field){
@@ -302,6 +336,88 @@
       update(description.val(), 'description')
     })
     console.log(url)
+
+
+attachment.on('change', function() {
+  let files = attachment[0].files;
+  let formData = new FormData();
+
+  for (let i = 0; i < files.length; i++) {
+    formData.append('attachment[]', files[i]);
+  }
+
+  let update_url = $('#task-form').data('url');
+
+  $.ajax({
+    url: update_url,
+    method: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      if (response.attachments && response.attachments.length > 0) {
+        let list = $('#attachment-list');
+        $('#attachment-section').removeClass('d-none');
+
+        response.attachments.forEach(file => {
+          let ext = file.filename.split('.').pop().toUpperCase();
+
+          // Cek apakah item sudah ada supaya tidak double
+          if ($(`#attachment-item-${file.id}`).length === 0) {
+            let item = `
+              <li class="list-group-item d-flex justify-content-between align-items-center" id="attachment-item-${file.id}">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-paperclip me-2 text-primary"></i>
+                  <a href="/storage/attachments/${file.filename}" target="_blank" class="text-decoration-none fw-medium">
+                    ${file.filename}
+                  </a>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-secondary">${ext}</span>
+                  <button type="button" class="btn btn-sm btn-outline-danger delete-attachment" data-id="${file.id}">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </li>
+            `;
+            list.append(item);
+          }
+        });
+      }
+    },
+    error: function(xhr) {
+      console.error('Gagal upload file:', xhr.responseText);
+    }
+  });
+});
+
+
+$(document).on('click', '.delete-attachment', function () {
+  let attachmentId = $(this).data('id');
+  let deleteUrl = `/attachments/${attachmentId}`;
+
+  if (!confirm('Yakin ingin menghapus file ini?')) return;
+
+  $.ajax({
+    url: deleteUrl,
+    method: 'POST',
+    data: {
+      _method: 'DELETE',
+      _token: $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function (response) {
+      console.log('Attachment berhasil dihapus:', response);
+      // Optional: Hapus elemen dari DOM
+      $(`button[data-id="${attachmentId}"]`).closest('li').remove();
+    },
+    error: function (xhr) {
+      console.error('Gagal hapus attachment:', xhr.responseText);
+    }
+  });
+});
+
+
+
 
     // Panggil saat halaman selesai dimuat
     loadComments();
