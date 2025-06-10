@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AttachmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,12 +64,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
     Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::get('/projects_list/{project}', [ProjectController::class, 'list'])->name('projects.list');
+    Route::get('/projects/{project}/gantt', [ProjectController::class, 'gantt'])->name('projects.gantt');
+    Route::post('/gantt/update', [App\Http\Controllers\ProjectController::class, 'updateTaskDates'])->name('gantt.update');
+
+
 
 
 Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
 Route::get('/task/delete/{project}/{task}', [TaskController::class, 'delete'])->name('task.delete');
 Route::post('/tasks/update-status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+Route::delete('/attachments/{attachment}', [TaskController::class, 'destroyAttachment'])->name('attachments.destroy');
+
+
 // web.php
 Route::post('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 

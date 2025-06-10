@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Task;
 
 class ProjectController extends Controller
 {
@@ -93,6 +95,58 @@ public function create()
         return redirect()->route('projects.index2')
                          ->with('success', 'Project berhasil dihapus!');
     }
+
+   public function gantt(Project $project)
+{
+    $tasks = $project->tasks()
+        ->whereNotNull('start_date')
+        ->whereNotNull('end_date')
+        ->get();
+
+    $ganttTasks = $tasks->map(function($task) {
+        return [
+            'id' => (string) $task->id,
+            'name' => $task->nama_task,
+            'start' => date('Y-m-d', strtotime($task->start_date)), 
+            'end' => date('Y-m-d', strtotime($task->end_date)),
+            'progress' => match ($task->status) {
+                'todo' => 0,
+                'inprogress' => 50,
+                'done' => 100,
+                default => 0
+            },
+        ];
+    });
+
+    return view('projects.gantt', compact('project', 'ganttTasks'));
+}
+
+
+public function updateTaskDates(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'id' => 'required|integer|exists:tasks,id',
+        'start' => 'required|date',
+        'end' => 'required|date',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validasi gagal',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    $task = Task::find($request->id);
+    $task->start_date = $request->start;
+    $task->end_date = $request->end;
+    $task->save();
+
+    return response()->json([
+        'message' => 'Task berhasil diperbarui.',
+        'task' => $task,
+    ]);
+}
 
 
 }
