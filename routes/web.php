@@ -24,9 +24,7 @@ use App\Http\Controllers\AttachmentController;
 
 
 
-Route::get('/dashboard', [ProjectController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/dashboard', [ProjectController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::get('/gantt', function () {
     $tasks = [
@@ -67,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/{project}/gantt', [ProjectController::class, 'gantt'])->name('projects.gantt');
     Route::post('/gantt/update', [App\Http\Controllers\ProjectController::class, 'updateTaskDates'])->name('gantt.update');
 
+    Route::post('/project/give_access', [ProjectController::class, 'give_access'])->name('projects.give_access');
 
 
 

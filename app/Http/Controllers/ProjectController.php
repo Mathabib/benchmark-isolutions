@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Task;
+use App\Models\User;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
-        return view('dashboard', compact('projects'));
+        $project = Project::all();
+        return view('dashboard', compact('project'));
     }
 
 
@@ -96,30 +97,32 @@ public function create()
                          ->with('success', 'Project berhasil dihapus!');
     }
 
-   public function gantt(Project $project)
-{
-    $tasks = $project->tasks()
-        ->whereNotNull('start_date')
-        ->whereNotNull('end_date')
-        ->get();
+    public function gantt(Project $project)
+    {
+        $tasks = $project->tasks()
+            ->whereNotNull('start_date')
+            ->whereNotNull('end_date')
+            ->get();
 
-    $ganttTasks = $tasks->map(function($task) {
-        return [
-            'id' => (string) $task->id,
-            'name' => $task->nama_task,
-            'start' => date('Y-m-d', strtotime($task->start_date)), 
-            'end' => date('Y-m-d', strtotime($task->end_date)),
-            'progress' => match ($task->status) {
-                'todo' => 0,
-                'inprogress' => 50,
-                'done' => 100,
-                default => 0
-            },
-        ];
-    });
+        $ganttTasks = $tasks->map(function($task) {
+            return [
+                'id' => (string) $task->id,
+                'name' => $task->nama_task,
+                'start' => date('Y-m-d', strtotime($task->start_date)), 
+                'end' => date('Y-m-d', strtotime($task->end_date)),
+                'progress' => match ($task->status) {
+                    'todo' => 0,
+                    'inprogress' => 50,
+                    'done' => 100,
+                    default => 0
+                },
+                'custom_class' => 'ganti_warna',
+                'color' => '#ffc909'
+            ];
+        });
 
-    return view('projects.gantt', compact('project', 'ganttTasks'));
-}
+        return view('projects.gantt', compact('project', 'ganttTasks'));
+    }
 
 
 public function updateTaskDates(Request $request)
@@ -148,5 +151,11 @@ public function updateTaskDates(Request $request)
     ]);
 }
 
+public function give_access(Request $request){
+    
+    $user = User::find($request->user_id);
+    $user->projects()->attach($request->project_id);
+
+}
 
 }

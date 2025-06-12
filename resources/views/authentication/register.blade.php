@@ -85,6 +85,19 @@
               </div>
               <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
             </div>
+            <div class="mb-3">
+            <div class="input-group">
+              <div class="form-floating flex-grow-1">              
+                  <select name="role" class="form-select" aria-label="Default select example">
+                    {{-- <option selected>Choose Role</option> --}}
+                    <option selected value="admin">Admin</option>
+                    <option value="user">User</option>                    
+                  </select>
+                <label for="loginPassword">Role</label>
+              </div>
+              <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+            </div>
+          </div>
             <!--begin::Row-->
             <div class="row">
               <div class="col-8 d-inline-flex align-items-center">

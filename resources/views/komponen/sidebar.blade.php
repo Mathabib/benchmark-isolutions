@@ -55,36 +55,34 @@
                         </ul>
                         @endif
                     </li>
-                
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-box-seam-fill"></i>
-                            <p>
-                                Settings
-                                <i class="nav-arrow bi bi-chevron-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                          
-                                <li class="nav-item">
-                                    {{-- <a href="{{ route('projects.index2', $project->id) }}" class="nav-link"> --}}
-                                    <a href="{{ route('projects.index2') }}" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Projects</p>
-                                    </a>
-                                </li>
-
-                                 <li class="nav-item">
-                                    {{-- <a href="{{ route('users.index', $project->id) }}" class="nav-link"> --}}
-                                    <a href="{{ route('users.index') }}" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Users</p>
-                                    </a>
-                                </li>
-                           
-                        </ul>
-                        
-                    </li>
+                    
+                    @if(Auth::user()->role == 'admin')
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-box-seam-fill"></i>
+                                <p>
+                                    Settings
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">                            
+                                    <li class="nav-item">
+                                        {{-- <a href="{{ route('projects.index2', $project->id) }}" class="nav-link"> --}}
+                                        <a href="{{ route('projects.index2') }}" class="nav-link">
+                                            <i class="nav-icon bi bi-circle"></i>
+                                            <p>Projects</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        {{-- <a href="{{ route('users.index', $project->id) }}" class="nav-link"> --}}
+                                        <a href="{{ route('users.index') }}" class="nav-link">
+                                            <i class="nav-icon bi bi-circle"></i>
+                                            <p>Users</p>
+                                        </a>
+                                    </li>                            
+                            </ul>                            
+                        </li>
+                    @endif
                 </ul>
                 <!--end::Sidebar Menu-->
             </nav>

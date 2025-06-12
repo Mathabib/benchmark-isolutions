@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', compact('users'));
+        $projects = Project::all();
+        return view('users.index', compact('users', 'projects'));
     }
 
     // Form tambah user
@@ -23,16 +25,19 @@ class UserController extends Controller
     // Simpan user baru
     public function store(Request $request)
     {
+        @dd($request);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'nullable'
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => $request->role
         ]);
 
         return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan!');

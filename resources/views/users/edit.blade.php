@@ -106,7 +106,7 @@
             <div class="form-group">
                 <label for="password">Password Baru (opsional)</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Biarkan kosong jika tidak ingin mengubah">
-            </div>
+            </div>            
 
             <div class="d-flex gap-3 mt-4">
                 <button type="submit" class="btn btn-primary">
@@ -118,6 +118,106 @@
             </div>
         </form>
     </div>
+
+    <div>
+        <div>
+            <h2>Project</h2>
+        </div>
+
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td style="width: 50px">No</td>
+                        <td>Projects</td>
+                        <td style="width: 160px;">Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="add-project-button-row">
+                        <td>{{ $projects->count() + 1 }}</td>
+                        <td colspan="2">
+                            <button id="btn-show-add" class="btn btn-sm btn-success">
+                                <i class="bi bi-plus-lg"></i> Tambah Proyek
+                            </button>
+                        </td>                                
+                    </tr>
+
+                    <tr id="add-project-form-row" class="d-none">
+                        <form action="{{ route('projects.give_access') }}" method="POST">
+                            @csrf
+                            <td></td>
+                            {{-- <td><input type="text" name="nama" class="form-control" placeholder="Nama proyek" required></td>                                     --}}
+                            <td>
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <select name="project_id" id="project_id" class="form-select">
+                                    <option value="" selected>Project</option>
+                                    @foreach ($projects as $project)                                                
+                                        <option value="{{ $project->id }}">{{ $project->nama }}</option>
+                                    @endforeach
+                                    
+                                </select>
+                            </td>                                    
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-sm btn-success" title="Simpan">
+                                        <i class="bi bi-check-lg"></i> Simpan
+                                    </button>
+                                    <button type="button" id="btn-cancel-add" class="btn btn-sm btn-secondary" title="Batal">
+                                        <i class="bi bi-x-lg"></i> Batal
+                                    </button>
+                                </div>
+                            </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnShowAdd = document.getElementById('btn-show-add');
+        const addFormRow = document.getElementById('add-project-form-row');
+        const addBtnRow = document.getElementById('add-project-button-row');
+        const btnCancelAdd = document.getElementById('btn-cancel-add');
+
+        // Show add form
+        btnShowAdd.addEventListener('click', () => {
+            addBtnRow.classList.add('d-none');
+            addFormRow.classList.remove('d-none');
+        });
+
+        // Cancel add form
+        btnCancelAdd.addEventListener('click', () => {
+            addFormRow.classList.add('d-none');
+            addBtnRow.classList.remove('d-none');
+            addFormRow.querySelector('input[name="nama"]').value = '';
+            addFormRow.querySelector('input[name="deskripsi"]').value = '';
+        });
+
+        // Edit functionality
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', e => {
+                const row = e.target.closest('tr');
+                const id = row.dataset.id;
+                row.style.display = 'none';
+                document.querySelector(`tr.edit-row[data-id="${id}"]`).classList.remove('d-none');
+            });
+        });
+
+        // Cancel edit
+        document.querySelectorAll('.btn-cancel').forEach(button => {
+            button.addEventListener('click', e => {
+                const row = e.target.closest('tr.edit-row');
+                const id = row.dataset.id;
+                row.classList.add('d-none');
+                document.querySelector(`tr[data-id="${id}"]`).style.display = '';
+            });
+        });
+    });
+</script>
 
 @endsection

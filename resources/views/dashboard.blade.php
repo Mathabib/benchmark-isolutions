@@ -3,6 +3,7 @@
 @section('title', 'dashboard')
 @section('content')
     <h1>Dashboard not Ready under development</h1>
+    <p>{{ Auth::user()->role }}</p>
     {{-- <!--begin::App Main-->
         <main class="app-main">
             <!--begin::App Content Header-->
