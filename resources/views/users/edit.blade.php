@@ -134,8 +134,28 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($projects_access as $index => $project)                    
+                    <tr data-id="{{ $project->id }}">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $project->nama }}</td>                        
+                        <td>
+                            <div class="d-flex gap-2">                                
+                                <form action="{{ route('projects.detach') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus proyek ini?')">                                    
+                                    @csrf
+                                    @method('POST')
+                                    <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>            
+                    @endforeach
+                    
                     <tr id="add-project-button-row">
-                        <td>{{ $projects->count() + 1 }}</td>
+                        <td>{{ $projects_access->count() + 1 }}</td>
                         <td colspan="2">
                             <button id="btn-show-add" class="btn btn-sm btn-success">
                                 <i class="bi bi-plus-lg"></i> Tambah Proyek
@@ -174,7 +194,7 @@
             </table>
         </div>
     </div>
-    
+
 </div>
 
 <script>
