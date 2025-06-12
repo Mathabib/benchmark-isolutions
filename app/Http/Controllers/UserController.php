@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Termwind\Components\Dd;
 
 class UserController extends Controller
 {
@@ -12,8 +14,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        $projects = Project::all();
-        return view('users.index', compact('users', 'projects'));
+        // $projects = Project::all();
+        return view('users.index', compact('users'));
     }
 
     // Form tambah user
@@ -45,8 +47,28 @@ class UserController extends Controller
 
     // Form edit user
     public function edit(User $user)
+    {   
+        $projects_access = $user->projects;    
+        return view('users.edit', compact('user', 'projects_access'));
+    }
+
+    //ngasih akses project
+    public function give_access(Request $request)
     {
-        return view('users.edit', compact('user'));
+    
+    $user = User::find($request->user_id);
+    $user->projects()->syncWithoutDetaching([$request->project_id]);
+    // $user->projects()->attach($request->project_id);
+    return redirect()->back()->with('success', 'Akses berhasil diberikan.');
+    }
+
+    //detach project, melepas akses
+    public function detach(Request $request)
+    {
+        // return $request;
+        $user = User::findOrFail($request->user_id);
+        $user->projects()->detach($request->project_id);
+        return redirect()->back()->with('success', 'Akses berhasil dihapus.');
     }
 
     // Update data user

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Task;
@@ -12,8 +13,12 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $project = Project::all();
-        return view('dashboard', compact('project'));
+        if(Auth::user()->role == 'admin'){
+            $projects_sidebar = Project::all();
+        } else{
+            $projects_sidebar = Auth::user()->projects;
+        }
+        return view('dashboard', compact('projects_sidebar'));
     }
 
 
@@ -151,11 +156,6 @@ public function updateTaskDates(Request $request)
     ]);
 }
 
-public function give_access(Request $request){
-    
-    $user = User::find($request->user_id);
-    $user->projects()->attach($request->project_id);
 
-}
 
 }

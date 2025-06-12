@@ -42,9 +42,9 @@
                                 <i class="nav-arrow bi bi-chevron-right"></i>
                             </p>
                         </a>
-                        @if(isset($project))
+                        @if(isset($projects_sidebar))
                         <ul class="nav nav-treeview">
-                            @foreach($projects as $project)
+                            @foreach($projects_sidebar as $project)
                                 <li class="nav-item">
                                     <a href="{{ route('projects.show', $project->id) }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>

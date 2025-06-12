@@ -65,8 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/{project}/gantt', [ProjectController::class, 'gantt'])->name('projects.gantt');
     Route::post('/gantt/update', [App\Http\Controllers\ProjectController::class, 'updateTaskDates'])->name('gantt.update');
 
-    Route::post('/project/give_access', [ProjectController::class, 'give_access'])->name('projects.give_access');
-
+    Route::post('/project/give_access', [UserController::class, 'give_access'])->name('projects.give_access');
+    Route::post('/project/detach', [UserController::class, 'detach'])->name('projects.detach');
 
 
 Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
