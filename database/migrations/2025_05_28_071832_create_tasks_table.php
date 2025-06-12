@@ -22,6 +22,7 @@ return new class extends Migration
         $table->foreignId('assign_to')->nullable()->constrained('users')->onDelete('set null');
         $table->string('priority')->default('medium'); // contoh: low, medium, high
         $table->string('description')->nullable()->default('...'); // contoh: low, medium, high
+        $table->integer('progress')->nullable()->default(0);
         $table->text('comment')->nullable(); // comment awal
         $table->timestamps();
     });

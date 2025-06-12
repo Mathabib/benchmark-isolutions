@@ -49,7 +49,7 @@
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Status</div> 
             <div role="cell" class=" cell-konten">
-              <select class="form-control form-control-sm" name="status" id="status_input" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <select {{ Auth::user()->role == 'user' ? 'disabled' : ''}} class="form-control form-control-sm" name="status" id="status_input" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
                 @foreach(['todo' => 'To Do', 'inprogress' => 'In Progress', 'done' => 'Complete'] as $key => $label)
                   <option value="{{ $key }}" @if(old('status', $task->status) == $key) selected @endif>{{ $label }}</option>
                 @endforeach
@@ -59,7 +59,7 @@
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Priority</div> 
             <div role="cell" class=" cell-konten">
-              <select class="form-control form-control-sm" name="priority" id="priority_input" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <select {{ Auth::user()->role == 'user' ? 'disabled' : ''}} class="form-control form-control-sm" name="priority" id="priority_input" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
                 @foreach(['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'] as $key => $label)
                   <option value="{{ $key }}" @if(old('priority', $task->priority) == $key) selected @endif>{{ $label }}</option>
                 @endforeach
@@ -69,7 +69,7 @@
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Assign To</div> 
             <div role="cell" class=" cell-konten">
-              <select class="form-control form-control-sm" name="assign_to" id="assign_to_input" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <select {{ Auth::user()->role == 'user' ? 'disabled' : ''}} class="form-control form-control-sm" name="assign_to" id="assign_to_input" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
                 <option value="">-- None --</option>
                 @foreach(App\Models\User::all() as $user)
                   <option value="{{ $user->id }}" @if(old('assign_to', $task->assign_to) == $user->id) selected @endif>{{ $user->name }}</option>
@@ -83,13 +83,13 @@
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Date Start</div> 
             <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="date" name="start_date" id="start_date_input"  value="{{ old('start_date', $task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') : '') }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <input {{ Auth::user()->role == 'user' ? 'disabled' : ''}} class="form-control form-control-sm" type="date" name="start_date" id="start_date_input"  value="{{ old('start_date', $task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') : '') }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
             </div>
           </div>
           <div role="row" class="d-flex mb-3">
             <div role="cell" class="me-3 cell-label" >Deadline</div> 
             <div role="cell" class=" cell-konten">
-              <input class="form-control form-control-sm" type="date" name="end_date" id="end_date_input" value="{{ old('end_date', $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('Y-m-d') : '' ) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+              <input {{ Auth::user()->role == 'user' ? 'disabled' : ''}} class="form-control form-control-sm" type="date" name="end_date" id="end_date_input" value="{{ old('end_date', $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('Y-m-d') : '' ) }}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
             </div>
           </div>
           <div role="row" class="d-flex mb-3">
@@ -100,42 +100,44 @@
           </div>
         </div>
       </div>
-<div class="mb-4">
-  <label for="attachment" class="form-label fw-bold">Upload Attachment</label>
-  <input type="file" name="attachment[]" id="attachment" class="form-control" multiple>
-  <small class="form-text text-muted">You can select multiple files at once.</small>
-</div>
-
-<div id="attachment-section" class="mb-4 {{ $task->attachments && $task->attachments->count() > 0 ? '' : 'd-none' }}">
-  <label class="form-label fw-bold">Existing Attachments</label>
-  <ul class="list-group" id="attachment-list">
-    @if($task->attachments && $task->attachments->count() > 0)
-      @foreach($task->attachments as $file)
-        <li class="list-group-item d-flex justify-content-between align-items-center" id="attachment-item-{{ $file->id }}">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-paperclip me-2 text-primary"></i>
-            <a href="{{ asset('storage/attachments/' . $file->filename) }}" target="_blank" class="text-decoration-none fw-medium">
-              {{ $file->filename }}
-            </a>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-secondary">{{ strtoupper(pathinfo($file->filename, PATHINFO_EXTENSION)) }}</span>
-            <button type="button" class="btn btn-sm btn-outline-danger delete-attachment" data-id="{{ $file->id }}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </li>
-      @endforeach
+    @if(Auth::user()->role == 'admin')      
+    <div class="mb-4">
+      <label for="attachment" class="form-label fw-bold">Upload Attachment</label>
+      <input type="file" name="attachment[]" id="attachment" class="form-control" multiple>
+      <small class="form-text text-muted">You can select multiple files at once.</small>
+    </div>
     @endif
-  </ul>
-</div>
+
+    <div id="attachment-section" class="mb-4 {{ $task->attachments && $task->attachments->count() > 0 ? '' : 'd-none' }}">
+      <label class="form-label fw-bold">Existing Attachments</label>
+      <ul class="list-group" id="attachment-list">
+        @if($task->attachments && $task->attachments->count() > 0)
+          @foreach($task->attachments as $file)
+            <li class="list-group-item d-flex justify-content-between align-items-center" id="attachment-item-{{ $file->id }}">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-paperclip me-2 text-primary"></i>
+                <a href="{{ asset('storage/attachments/' . $file->filename) }}" target="_blank" class="text-decoration-none fw-medium">
+                  {{ $file->filename }}
+                </a>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-secondary">{{ strtoupper(pathinfo($file->filename, PATHINFO_EXTENSION)) }}</span>
+                <button type="button" class="btn btn-sm btn-outline-danger delete-attachment" data-id="{{ $file->id }}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </li>
+          @endforeach
+        @endif
+      </ul>
+    </div>
 
 
 
 
       <div class="mb-3">
         <label for="description" name="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" rows="10">{{ old('description', $task->description) }}</textarea>
+        <textarea {{ Auth::user()->role == 'user' ? 'disabled' : ''}} class="form-control" id="description" rows="10">{{ old('description', $task->description) }}</textarea>
       </div>
 
 
